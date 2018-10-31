@@ -1,0 +1,14 @@
+#These lines of code are to be copied and pasted into artemis command line.
+#You can either request an interactive session, or run this from the home node
+#as these programs require user input.
+
+cd IDLPATHx
+module load idl
+idl
+.compile trdatlorebindat_Bennett.pro
+trdatlorebindat, list, data, lmdata, ix, DATE='DATEx', STUDY='STUDYx', POSE_ZERO=1, SMOOTH=SMOOTHx, STYPE=STYPEx
+exit
+
+
+cd PROCESSPATHx
+./mPET_sync_listmode_v1 DATAPATHx/DATEx_PTSD_STUDYx/DATEx_PTSD_STUDYx_v1.lst DATAPATHx/DATEx_PTSD_STUDYx/DATEx_MTData_STUDYx/LORebin_STUDYx.dat

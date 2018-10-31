@@ -1,0 +1,31 @@
+#!/bin/bash
+#PBS -P PET_PTSD
+#PBS -l select=1:ncpus=16:mem=8GB
+#PBS -l walltime=0:30:00
+#PBS -q defaultQ #queue can be small, medium, large, .. (see user guide)
+
+#First creates Tr.dat which allows to convert (transform) MT data into scanner space using gantry reference markers.
+#Then we create LORebin_SCANname.dat "motion file" which uses the 1. the head (target) marker, 2. the tracker to scanner calibration files Tc.dat and Tref_4X.dat and 3. the transform from MT to scanner Tr.dat
+
+cd IDLPATHx
+module load idl
+idl
+.compile trdatlorebindat_Bennett.pro
+trdatlorebindat, list, data, lmdata, ix, DATE='DATEx', STUDY='STUDYx', POSE_ZERO=1, SMOOTH=SMOOTHx, STYPE=STYPEx #replace variables appropriately
+exit #would this exit IDL?
+
+#LORebin.dat is then used to generate a new "motion correctable" list-mode (output: listmode_mc.lst) file which which includes head (target) motion vectors next to corresponding LOR events in the list-mode data
+#This process is called synchronising the motion data with the LM stream.
+
+cd PROCESSPATHx
+./mPET_sync_listmode_v1 DATAPATHx/DATEx_PTSD_STUDYx/DATEx_PTSD_STUDYx_v1.lst DATAPATHx/DATEx_PTSD_STUDYx/DATEx_MTData_STUDYx/LORebin_STUDYx.dat
+#./postprocess_listmode_v4c DATAPATHx/DATEx_PTSD_STUDYx/DATEx_PTSD_STUDYx_v1.lst DATAPATHx/DATEx_PTSD_STUDYx/DATEx_MTData_STUDYx/LORebin_STUDYx.dat
+
+
+#The new listmode_mc.lst file which includes motion vectors next to corresponding LOR events now needs to be corrected before it can be fed into the reconstruction algorithm. Creates .lm8 and .mot files
+
+./mPET_genlistmode_v6 -i DATAPATHx/DATEx_PTSD_STUDYx/DATEx_PTSD_STUDYx_v1_mc.lst -o DATAPATHx/DATEx_PTSD_STUDYx/STUDYx_4recon -n NORMPATHx -N 1 -M 1 -S SUBSETSx -A 0 -t FRAMETIMEx -X XVALUEx
+
+#reconstructing the image
+cd RECONPATHx
+./microPET_LMEMML_3drecon DATAPATHx/DATEx_PTSD_STUDYx/reconstruction_parameters_STUDYx_RECONTYPEx.par

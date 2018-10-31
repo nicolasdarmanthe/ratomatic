@@ -1,0 +1,12 @@
+#!/bin/bash
+#PBS -P PET_PTSD
+#PBS -l select=1:ncpus=16:mem=27GB
+#PBS -l walltime=1:30:00
+#PBS -q defaultQ
+
+cd PROCESSPATHx
+./mPET_genlistmode_v6 -i DATAPATHx/DATEx_PTSD_STUDYx/DATEx_PTSD_STUDYx_v1_mc.lst -o DATAPATHx/DATEx_PTSD_STUDYx/STUDYx_RECONTYPEx_4recon -n NORMPATHx -N 1 -M 1 -S SUBSETSx -A 0 -t FRAMETIMEx -X XVALUEx
+
+
+cd RECONPATHx
+./microPET_LMEMML_3drecon DATAPATHx/DATEx_PTSD_STUDYx/reconstruction_parameters_STUDYx_RECONTYPEx.par

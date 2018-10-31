@@ -1,0 +1,67 @@
+!PARAMETER FILE v7.6.0
+
+!SCANNER SPECIFIC PARAMETERS
+scanner name := Focus220
+
+
+!GENERAL IMAGE PARAMETERS
+image matrix size [1] := MATSIZEX
+image matrix size [2] := MATSIZEY
+image matrix size [3] := MATSIZEZ
+scaling factor (mm/pixel) [1] := VOXSIZEX
+scaling factor (mm/pixel) [2] := VOXSIZEY
+scaling factor (mm/pixel) [3] := VOXSIZEZ
+image offset (mm) [1] := 0.0
+image offset (mm) [2] := 0.0
+image offset (mm) [3] := 0.0
+
+
+!RESOLUTION MODELLING
+resolution modelling := yes
+fwhm1 := 0.0
+fwhm2 := 0.0
+ratio := 0.0
+kernel filename :=
+
+!STUDY
+investigator := user
+study name := study_name
+isotope := F-18
+frames := FRAMETIMEx
+
+
+!RECONSTRUCTION PARAMETERS
+verbosity level := 65
+subsets := SUBSETSx
+iterations := ITERATIONSx
+save an image every := 0
+weighting scheme := 1
+number of threads := 16
+calculate normfac := yes
+attenuation correction := no
+enable virtual scanner := no
+
+
+!RECONSTRUCTION FILENAMES
+system filename := SYSPATHx
+normalisation sinogram filename := NORMPATHx
+normfac filename :=
+listmode data filename := DATAPATHx/DATEx_PTSD_STUDYx/STUDYx_RECONTYPEx_4recon_frame*.lm8
+output image filename := DATAPATHx/DATEx_PTSD_STUDYx/out/STUDYx_RECONTYPEx
+initial image filename :=
+mumap image filename :=
+
+
+!MOTION
+motion correction := yes
+motion filename := DATAPATHx/DATEx_PTSD_STUDYx/STUDYx_RECONTYPEx_4recon_frame*.mot
+time averaged sensitivity calculation := image
+encoded motion data := yes
+random samples (million) := 0
+
+
+!4D RECON PARAMETERS
+temporal model :=
+nested iterations :=
+basis functions filename :=
+segmented atlas filename :=
